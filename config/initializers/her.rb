@@ -3,13 +3,10 @@ require 'faraday_middleware'
 require 'her'
 require 'her/middleware/json_api_parser'
 
-Settings.cap ||= {}
-Settings.cap[:protocol] ||= 'http'
-Settings.cap[:api_host] ||= Settings.cap[:host] || 'localhost'
-Settings.cap[:api_port] ||= Settings.cap[:port] || 8003
+api_url = ENV['YB_URL'] || "#{Settings.yearbook.protocol}://#{Settings.yearbook.api_host}:#{Settings.yearbook.api_port}"
 
 YB = Her::API.new
-YB.setup url: "#{Settings.yearbook.protocol}://#{Settings.yearbook.api_host}:#{Settings.yearbook.api_port}" do |c|
+YB.setup url: api_url do |c|
   # Request
   c.use FaradayMiddleware::EncodeJson
   # Response
