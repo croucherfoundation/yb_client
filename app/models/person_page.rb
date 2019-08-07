@@ -1,7 +1,7 @@
 class PersonPage
   include Her::JsonApi::Model
   use_api YB
-  collection_path "/api/person_pages"
+  collection_path "/api/admin/person_pages"
 
   # temporary while we are not yet sending jsonapi data back to core properly
   include_root_in_json true
