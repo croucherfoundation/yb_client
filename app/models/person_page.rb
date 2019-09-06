@@ -16,6 +16,7 @@ class PersonPage
       featured_at: nil,
       blacklisted: false,
       invited_at: nil,
+      invite_me: false,
       reminded_at: nil,
       accepted_at: nil,
       slug: ""
@@ -31,12 +32,23 @@ class PersonPage
     DateTime.parse(featured_at)
   end
 
-  def invited?
-    !invited_at.nil?
+  def awarded?
+    awarded_at.present?
   end
 
-  def invitable?
-    person.invitable?
+
+  # Invitations to the yearbook are sent when a scholar receives their first award.
+  #
+  def invited?
+    invited_at.present?
+  end
+
+  def inviting?
+    !accepted? && !!invite_me
+  end
+
+  def should_be_invited?
+    awarded? && !invited? && !inviting?
   end
 
   def invited_date
@@ -44,43 +56,40 @@ class PersonPage
   end
 
   def accepted?
-    !accepted_at.nil?
+    accepted_at.present?
   end
 
   def accepted_date
     DateTime.parse(accepted_at).in_time_zone(Rails.application.config.time_zone) if accepted_at.present?
   end
 
-  def reminded?
-    !reminded_at.nil?
+
+  # Reinvitations are sent when an existing scholar receives a new award.
+  #
+  def reinvited?
+    invited? && accepted? && invited_at > accepted_at
   end
 
-  def remindable?
-    invited? && !accepted?
+  def reinviting?
+    accepted? && !!invite_me
   end
 
-  def reminded_date
-    DateTime.parse(reminded_at).in_time_zone(Rails.application.config.time_zone) if reminded_at.present?
+  def should_be_reinvited?
+    accepted? && awarded? && !inviting? && awarded_at > accepted_at
   end
+
+
 
   def published?
     published_at.present?
   end
 
+  def published_since_invitation?
+    published? && invited? && published_at > invited_at
+  end
+
   def published_date
     DateTime.parse(published_at).in_time_zone(Rails.application.config.time_zone) if published_at.present?
-  end
-
-  def reminded_to_publish?
-    !reminded_to_publish_at.nil?
-  end
-
-  def remindable_to_publish?
-    invited? && user && user.confirmed?
-  end
-
-  def reminded_to_publish_date
-    DateTime.parse(reminded_to_publish_at).in_time_zone(Rails.application.config.time_zone) if reminded_to_publish_at.present?
   end
 
 end
