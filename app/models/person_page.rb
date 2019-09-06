@@ -44,11 +44,11 @@ class PersonPage
   end
 
   def inviting?
-    !accepted? && invitable?
+    awarded? && !invited? && invitable?
   end
 
   def should_be_invited?
-    awarded? && !invited? && !inviting?
+    awarded? && !invited? && !invitable?
   end
 
   def invited_date
@@ -71,11 +71,11 @@ class PersonPage
   end
 
   def reinviting?
-    accepted? && invitable?
+    accepted? && awarded? && invitable? && awarded_at > accepted_at
   end
 
   def should_be_reinvited?
-    accepted? && awarded? && !inviting? && awarded_at > accepted_at
+    accepted? && awarded? && !invitable? && awarded_at > accepted_at
   end
 
 
