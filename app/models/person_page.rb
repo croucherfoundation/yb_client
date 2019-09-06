@@ -16,7 +16,7 @@ class PersonPage
       featured_at: nil,
       blacklisted: false,
       invited_at: nil,
-      invite_me: false,
+      invitable: false,
       reminded_at: nil,
       accepted_at: nil,
       slug: ""
@@ -44,7 +44,7 @@ class PersonPage
   end
 
   def inviting?
-    !accepted? && !!invite_me
+    !accepted? && invitable?
   end
 
   def should_be_invited?
@@ -71,7 +71,7 @@ class PersonPage
   end
 
   def reinviting?
-    accepted? && !!invite_me
+    accepted? && invitable?
   end
 
   def should_be_reinvited?
