@@ -37,10 +37,16 @@ class PersonPage
   end
 
 
-  # Invitations to the yearbook are sent when a scholar receives their first award.
+  # Invitations to the yearbook are sent when a scholar is issued with their first award.
+  # This is apparent because the Person record gives its issued_at date to the PersonPage.awarded_at value.
+  # If awarded_at is set and invited_at is not, then we start inviting. If awarded_at > invited_at, we reinvite.
   #
   def invited?
     invited_at.present?
+  end
+
+  def invitable?
+    awarded?
   end
 
   def inviting?
