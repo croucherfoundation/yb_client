@@ -44,11 +44,7 @@ class PersonPage
   end
 
   def inviting?
-    awarded? && !invited? && invitable?
-  end
-
-  def should_be_invited?
-    awarded? && !invited? && !invitable?
+    awarded? && !invited?
   end
 
   def invited_date
@@ -71,11 +67,7 @@ class PersonPage
   end
 
   def reinviting?
-    accepted? && awarded? && invitable? && awarded_at > accepted_at
-  end
-
-  def should_be_reinvited?
-    accepted? && awarded? && !invitable? && awarded_at > accepted_at
+    accepted? && awarded? && awarded_at > accepted_at
   end
 
 
@@ -88,8 +80,32 @@ class PersonPage
     published? && invited? && published_at > invited_at
   end
 
+  def out_of_date?
+    published? && invited? && published_at < awarded_at
+  end
+
   def published_date
     DateTime.parse(published_at).in_time_zone(Rails.application.config.time_zone) if published_at.present?
+  end
+
+  def publication_status
+    if published_at.present?
+      if !awarded_at.present? || DateTime.parse(published_at) > DateTime.parse(awarded_at)
+        "published"
+      else
+        "outofdate"
+      end
+    elsif accepted_at.present?
+      "accepted"
+    elsif reminded_at.present?
+      "reminded"
+    elsif invited_at.present?
+      "invited"
+    elsif !invitable?
+      "uninvitable"
+    else
+      "uninvited"
+    end
   end
 
 end
