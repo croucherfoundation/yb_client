@@ -24,6 +24,11 @@ class PersonPage
     person_page
   end
 
+  def self.for_person(person_uid)
+    person_uid = person_uid.uid if person_uid.respond_to?(:uid)
+    where(person_uid: person_uid).first
+  end
+
   def new_record?
     id.nil?
   end
