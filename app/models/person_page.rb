@@ -2,6 +2,7 @@ class PersonPage
   include Her::JsonApi::Model
   use_api YB
   collection_path "/api/admin/person_pages"
+  custom_post :invite, :remind
 
   # temporary while we are not yet sending jsonapi data back to core properly
   include_root_in_json true
@@ -46,6 +47,14 @@ class PersonPage
   # This is apparent because the Person record gives its issued_at date to the PersonPage.awarded_at value.
   # If awarded_at is set and invited_at is not, then we start inviting. If awarded_at > invited_at, we reinvite.
   #
+  def invite!
+    self.class.post("#{self.id}/invite")
+  end
+
+  def remind!
+    self.class.post("#{self.id}/remind")
+  end
+
   def invited?
     invited_at.present?
   end
