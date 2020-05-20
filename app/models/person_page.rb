@@ -83,7 +83,7 @@ class PersonPage
   end
 
   def reminded?
-    remindd_at.present?
+    reminded_at.present?
   end
 
   def reminded_date
