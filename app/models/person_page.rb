@@ -43,16 +43,22 @@ class PersonPage
   end
 
 
+  def created_date
+    DateTime.parse(created_at) if created_at.present?
+  end
+
+  def updated_date
+    DateTime.parse(updated_at) if updated_at.present?
+  end
+
+
+
   # Invitations to the yearbook are sent when a scholar is issued with their first award.
   # This is apparent because the Person record gives its issued_at date to the PersonPage.awarded_at value.
   # If awarded_at is set and invited_at is not, then we start inviting. If awarded_at > invited_at, we reinvite.
   #
   def invite!
     self.class.post("#{self.id}/invite")
-  end
-
-  def remind!
-    self.class.post("#{self.id}/remind")
   end
 
   def invited?
@@ -70,6 +76,20 @@ class PersonPage
   def invited_date
     DateTime.parse(invited_at) if invited_at.present?
   end
+
+
+  def remind!
+    self.class.post("#{self.id}/remind")
+  end
+
+  def reminded?
+    remindd_at.present?
+  end
+
+  def reminded_date
+    DateTime.parse(reminded_at) if reminded_at.present?
+  end
+
 
   def accepted?
     accepted_at.present?
