@@ -58,7 +58,7 @@ class PersonPage
   # If awarded_at is set and invited_at is not, then we start inviting. If awarded_at > invited_at, we reinvite.
   #
   def invite!
-    self.class.post("#{self.id}/invite")
+    self.class.post("/api/admin/person_pages/#{self.id}/invite")
   end
 
   def invited?
@@ -79,7 +79,7 @@ class PersonPage
 
 
   def remind!
-    self.class.post("#{self.id}/remind")
+    self.class.post("/api/admin/person_pages/#{self.id}/remind")
   end
 
   def reminded?
