@@ -148,5 +148,32 @@ class PersonPage
     end
   end
 
+
+  # Other reminders
+
+  def remind_to_update!
+    self.class.post("/api/admin/person_pages/#{self.id}/rtu")
+  end
+
+  def reminded_to_update?
+    rtu_at.present?
+  end
+
+  def rtu_date
+    DateTime.parse(rtu_at).in_time_zone(Rails.application.config.time_zone) if rtu_at.present?
+  end
+
+  def remind_to_publish!
+    self.class.post("/api/admin/person_pages/#{self.id}/rtp")
+  end
+
+  def reminded_to_publish?
+    rtp_at.present?
+  end
+
+  def rtp_date
+    DateTime.parse(rtp_at).in_time_zone(Rails.application.config.time_zone) if rtp_at.present?
+  end
+
 end
 
