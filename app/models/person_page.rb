@@ -1,12 +1,24 @@
-class PersonPage
-  include Her::JsonApi::Model
-  use_api YB
-  collection_path "/api/admin/person_pages"
-  custom_post :invite, :remind
+class PersonPage < ActiveResource::Base
 
-  # temporary while we are not yet sending jsonapi data back to core properly
-  include_root_in_json true
-  parse_root_in_json false
+  include CdbActiveResourceConfig
+  # include Her::JsonApi::Model
+  # use_api YB
+  # collection_path "/api/admin/person_pages"
+  # custom_post :invite, :remind
+
+  # # temporary while we are not yet sending jsonapi data back to core properly
+  # include_root_in_json true
+  # parse_root_in_json false
+
+  def self.where(params = {})
+    begin
+      person_pages = find(:all, params: params)
+    rescue => e
+      Rails.logger.info "Awards Fetch Error: #{e}"
+    end
+    meta = FormatApiResponse.meta
+    return person_pages, meta
+  end
 
   def self.new_with_defaults(attributes={})
     person_page = PersonPage.new({
