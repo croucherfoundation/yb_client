@@ -1,6 +1,8 @@
 class PersonPage < ActiveResource::Base
 
+  include FormatApiResponse
   include CdbActiveResourceConfig
+
   # include Her::JsonApi::Model
   # use_api YB
   # collection_path "/api/admin/person_pages"
@@ -10,15 +12,6 @@ class PersonPage < ActiveResource::Base
   # include_root_in_json true
   # parse_root_in_json false
 
-  def self.where(params = {})
-    begin
-      person_pages = find(:all, params: params)
-    rescue => e
-      Rails.logger.info "Awards Fetch Error: #{e}"
-    end
-    meta = FormatApiResponse.meta
-    return person_pages, meta
-  end
 
   def self.new_with_defaults(attributes={})
     person_page = PersonPage.new({
@@ -70,7 +63,7 @@ class PersonPage < ActiveResource::Base
   # If awarded_at is set and invited_at is not, then we start inviting. If awarded_at > invited_at, we reinvite.
   #
   def invite!
-    self.class.post("/api/admin/person_pages/#{self.id}/invite")
+    self.class.post("#{self.id}/invite")
   end
 
   def invited?
@@ -91,7 +84,7 @@ class PersonPage < ActiveResource::Base
 
 
   def remind!
-    self.class.post("/api/admin/person_pages/#{self.id}/remind")
+    self.class.post("#{self.id}/remind")
   end
 
   def reminded?
@@ -164,7 +157,7 @@ class PersonPage < ActiveResource::Base
   # Other reminders
 
   def remind_to_update!
-    self.class.post("/api/admin/person_pages/#{self.id}/rtu")
+    self.class.post("#{self.id}/rtu")
   end
 
   def reminded_to_update?
@@ -176,7 +169,7 @@ class PersonPage < ActiveResource::Base
   end
 
   def remind_to_publish!
-    self.class.post("/api/admin/person_pages/#{self.id}/rtp")
+    self.class.post("#{self.id}/rtp")
   end
 
   def reminded_to_publish?
