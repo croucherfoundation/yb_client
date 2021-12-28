@@ -1,4 +1,4 @@
-module CdbActiveResourceConfig
+module YbActiveResourceConfig
     extend ActiveSupport::Concern
   
     included do
