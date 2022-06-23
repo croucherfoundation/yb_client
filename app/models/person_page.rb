@@ -1,6 +1,6 @@
 class PersonPage < ActiveResource::Base
 
-  include FormatApiResponse
+  include YbFormatApiResponse
   include YbActiveResourceConfig
 
   # include Her::JsonApi::Model

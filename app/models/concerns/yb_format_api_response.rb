@@ -1,4 +1,4 @@
-module FormatApiResponse
+module YbFormatApiResponse
     include ActiveResource::Formats::JsonFormat
     attr_accessor :meta
   
