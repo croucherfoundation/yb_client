@@ -148,6 +148,9 @@ class PersonPage
     end
   end
 
+  def reindex
+    self.class.post("/api/admin/person_pages/#{self.id}/reindex")
+  end
 
   # Other reminders
 
