@@ -8,6 +8,8 @@ class PersonPage
   include_root_in_json true
   parse_root_in_json false
 
+  has_many :links
+
   def self.new_with_defaults(attributes={})
     person_page = PersonPage.new({
       person_uid: nil,
