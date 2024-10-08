@@ -20,14 +20,8 @@ class Link
 
   def self.create_or_update(person_page_id, params)
     params = params.to_h unless params == {}
-    person_page = PersonPage.find(person_page_id)
-    links = person_page.links
-    link = links.where(id: params["id"]).first if params["id"]
-    if link
-      patch "/api/admin/person_pages/#{person_page_id}/links/#{link.id}", params.except("id")
-    else
-      post  "/api/admin/person_pages/#{person_page_id}/links", params
-    end
+    link_params ={link: params}
+    post "/api/admin/person_pages/#{person_page_id}/create_or_update_links", link_params
   end
 
 end
