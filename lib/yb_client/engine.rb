@@ -1,3 +1,5 @@
+require_relative "../../app/helpers/yb_client_helper"
+
 module YbClient
   class Engine < ::Rails::Engine
 
@@ -5,10 +7,10 @@ module YbClient
       g.test_framework :rspec
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
     end
-    
+
     initializer "yb_client.integration" do
       ActiveSupport.on_load :action_controller do
-        helper YbClientHelper
+        helper ::YbClientHelper
       end
     end
 
